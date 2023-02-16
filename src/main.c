@@ -2,40 +2,44 @@
 #include "../include/huf_menu_funcs.h" 
 
 int main() {
-	int choice;
+	char choice;
 
-	printf("1 list\n");
-	printf("2 save\n");
-	printf("3 copy\n");
-	printf("4 categories\n");
-	printf("5 edit\n");
-	printf("6 quit\n");
+	printf("[l]ist\n");
+	printf("[s]ave\n");
+	printf("[c]opy\n");
+	printf("c[a]tegories\n");
+	printf("[e]dit\n");
+	printf("[q]uit\n");
 
-	scanf("%d", &choice);
+	choice = getchar();
 
 	switch (choice) {
-		case 1:
+		case 'l':
 			huf_list();
 		break;
 
-		case 2:
+		case 's':
 			printf("save\n");
 		break;
 
-		case 3:
+		case 'c':
 			printf("copy\n");
 		break;
 
-		case 4:
+		case 'a':
 			printf("categories\n");
 		break;
 
-		case 5:
+		case 'e':
 			printf("edit\n");
 		break;
 
-		case 6:
+		case 'q':
 			printf("quit\n");
+		break;
+
+		default:
+			printf("Choose one of the bracketed letters\n");
 		break;
 	}
 
