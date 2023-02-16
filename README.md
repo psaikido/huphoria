@@ -1,8 +1,10 @@
 # huphoria
 
-A project in C  
+A learning project in C  
 Bookmark anything  
-A bookmarking application expanding on my bash 'bookmarks' script
+A bookmarking application expanding on a bash 'bookmarks' script
+
+## TODO:
 
 - CRUD urls
 
@@ -20,3 +22,4 @@ A bookmarking application expanding on my bash 'bookmarks' script
   - do it all securely
   - integrate with 'pass'
   
+- configure what preferred apps and paths are
