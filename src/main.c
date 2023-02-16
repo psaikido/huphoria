@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "../include/huf_menu_funcs.h" 
+#include "../include/huf_configure.h" 
 
 int main() {
 	char choice;
@@ -9,6 +10,7 @@ int main() {
 	printf("[c]opy\n");
 	printf("c[a]tegories\n");
 	printf("[e]dit\n");
+	printf("c[o]figure\n");
 	printf("[q]uit\n");
 
 	choice = getchar();
@@ -32,6 +34,10 @@ int main() {
 
 		case 'e':
 			printf("edit\n");
+		break;
+
+		case 'o':
+			huf_configure();
 		break;
 
 		case 'q':
