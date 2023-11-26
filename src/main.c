@@ -10,7 +10,7 @@ int main() {
 	printf("[c]opy\n");
 	printf("c[a]tegories\n");
 	printf("[e]dit\n");
-	printf("c[o]figure\n");
+	printf("c[o]nfigure\n");
 	printf("[q]uit\n");
 
 	choice = getchar();
