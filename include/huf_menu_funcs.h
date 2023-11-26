@@ -7,3 +7,4 @@ void huf_copy();
 void huf_categories();
 void huf_edit();
 void huf_quit();
+void fire(); 

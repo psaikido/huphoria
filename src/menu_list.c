@@ -22,19 +22,28 @@ FILE* getFile() {
 }
 
 void huf_list() {
-	printf("::huphoria::\n");
+	// char choice;
+
+	printf("=^ huphoria::[m]enu ^=\n");
 
 	FILE *f = getFile();
 
-	// int i = 0;
+	int i = 1;
 	char line[255];
 	// char *lines;
 
     while (fgets(line, sizeof(line), f)) {
-		printf("%s", line);
+		printf("[%d]: %s", i++, line);
     }
 
 	fclose(f);
+	fire();
+}
+
+void fire() {
+	int choice;
+	choice = getchar();
+	printf("%d\n", choice);
 }
 
 void huf_save() {
