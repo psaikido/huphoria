@@ -1,3 +1,4 @@
+#include <curses.h>
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,6 +9,15 @@ int main() {
 	initscr();
 	cbreak();
 	noecho();
+
+	int yMax, xMax;
+	getmaxyx(stdscr, yMax, xMax);
+
+	WINDOW * menuwin = newwin(10, xMax - 12, yMax - 8, 5);
+	box(menuwin, 0, 0);
+	huf_menu(menuwin);
+	refresh();
+	wrefresh(menuwin);
 
     if (has_colors()) {
         start_color();
@@ -61,14 +71,7 @@ int main() {
 				break;
 
 			case 'm':
-				clear();
-				printw("[l]ist\n");
-				printw("[s]ave\n");
-				printw("[c]opy\n");
-				printw("c[a]tegories\n");
-				printw("[e]dit\n");
-				printw("c[o]nfigure\n");
-				printw("[q]uit\n");
+				huf_menu(menuwin);
 				break;
 
 			default:

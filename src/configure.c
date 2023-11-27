@@ -1,5 +1,6 @@
+#include <ncurses.h>
 #include "../include/huf_configure.h"
 
 void huf_configure() {
-	printf("the configure\n");
+	printw("the configure\n");
 }

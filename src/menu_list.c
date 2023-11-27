@@ -36,6 +36,18 @@ void huf_list() {
 	// fire();
 }
 
+void huf_menu(WINDOW * menuwin) {
+	int i = 0;
+	mvwprintw(menuwin, 1 + i++, 1, "%s\n", "[l]ist");
+	mvwprintw(menuwin, 1 + i++, 1, "%s\n", "[s]ave\n");
+	mvwprintw(menuwin, 1 + i++, 1, "%s\n", "[c]opy\n");
+	mvwprintw(menuwin, 1 + i++, 1, "%s\n", "c[a]tegories\n");
+	mvwprintw(menuwin, 1 + i++, 1, "%s\n", "[e]dit\n");
+	mvwprintw(menuwin, 1 + i++, 1, "%s\n", "c[o]nfigure\n");
+	mvwprintw(menuwin, 1 + i++, 1, "%s\n", "[q]uit\n");
+	wrefresh(menuwin);
+}
+
 void fire() {
 	int choice;
 	choice = getchar();
@@ -43,7 +55,7 @@ void fire() {
 }
 
 void huf_save() {
-	printw("the save");
+	printw("the save\n");
 }
 
 void huf_copy() {
