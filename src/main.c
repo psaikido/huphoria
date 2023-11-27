@@ -27,12 +27,12 @@ int main() {
 	refresh();
 
     for (;;) {
-		refresh();
 
 		char choice = getch();
 
 		switch (choice) {
 			case 'l':
+				clear();
 				huf_list();
 				break;
 
@@ -61,6 +61,7 @@ int main() {
 				break;
 
 			case 'm':
+				clear();
 				printw("[l]ist\n");
 				printw("[s]ave\n");
 				printw("[c]opy\n");
