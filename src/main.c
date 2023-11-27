@@ -1,5 +1,5 @@
-#include <curses.h>
 #include <ncurses.h>
+#include <menu.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/huf_menu_funcs.h" 
@@ -9,15 +9,7 @@ int main() {
 	initscr();
 	cbreak();
 	noecho();
-
-	int yMax, xMax;
-	getmaxyx(stdscr, yMax, xMax);
-
-	WINDOW * menuwin = newwin(10, xMax - 12, yMax - 8, 5);
-	box(menuwin, 0, 0);
-	huf_menu(menuwin);
-	refresh();
-	wrefresh(menuwin);
+	keypad(stdscr, TRUE);
 
     if (has_colors()) {
         start_color();
@@ -30,10 +22,11 @@ int main() {
         init_pair(7, COLOR_WHITE,   COLOR_BLACK);
     }
 
-	attrset(COLOR_PAIR(3));
-	addstr("");
-	addstr("=== huphoria [m]enu ===\n");
-	huf_list();
+	// attrset(COLOR_PAIR(3));
+	// addstr("");
+	// addstr("=== huphoria [m]enu ===\n");
+	// addstr("");
+	huf_menu();
 	refresh();
 
     for (;;) {
@@ -71,11 +64,11 @@ int main() {
 				break;
 
 			case 'm':
-				huf_menu(menuwin);
+				huf_menu();
 				break;
 
 			default:
-				printf("Choose one of the bracketed letters\n");
+				huf_menu();
 		}
 
 		refresh();
