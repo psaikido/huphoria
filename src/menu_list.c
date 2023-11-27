@@ -1,3 +1,4 @@
+#include <ncurses.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
@@ -22,44 +23,39 @@ FILE* getFile() {
 }
 
 void huf_list() {
-	// char choice;
-
-	printf("=^ huphoria::[m]enu ^=\n");
-
 	FILE *f = getFile();
 
 	int i = 1;
 	char line[255];
-	// char *lines;
 
     while (fgets(line, sizeof(line), f)) {
-		printf("[%d]: %s", i++, line);
+		printw("[%d]: %s", i++, line);
     }
 
 	fclose(f);
-	fire();
+	// fire();
 }
 
 void fire() {
 	int choice;
 	choice = getchar();
-	printf("%d\n", choice);
+	printw("%d\n", choice);
 }
 
 void huf_save() {
-	printf("the save\n");
+	printw("the save");
 }
 
 void huf_copy() {
-	printf("the copy\n");
+	printw("the copy\n");
 }
 
 void huf_categories() {
-	printf("the categories\n");
+	printw("the categories\n");
 }
 
 void huf_edit() {
-	printf("the edit\n");
+	printw("the edit\n");
 }
 
 void huf_quit() {

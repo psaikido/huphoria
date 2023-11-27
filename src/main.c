@@ -1,14 +1,35 @@
 #include <ncurses.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "../include/huf_menu_funcs.h" 
 #include "../include/huf_configure.h" 
 
 int main() {
-	char choice = 'l';
-	huf_list();
+	initscr();
+	cbreak();
+	noecho();
 
-	while (1 == 1) {
-		choice = getchar();
+    if (has_colors()) {
+        start_color();
+        init_pair(1, COLOR_RED,     COLOR_BLACK);
+        init_pair(2, COLOR_GREEN,   COLOR_BLACK);
+        init_pair(3, COLOR_YELLOW,  COLOR_BLACK);
+        init_pair(4, COLOR_BLUE,    COLOR_BLACK);
+        init_pair(5, COLOR_CYAN,    COLOR_BLACK);
+        init_pair(6, COLOR_MAGENTA, COLOR_BLACK);
+        init_pair(7, COLOR_WHITE,   COLOR_BLACK);
+    }
+
+	attrset(COLOR_PAIR(3));
+	addstr("");
+	addstr("=== huphoria [m]enu ===\n");
+	huf_list();
+	refresh();
+
+    for (;;) {
+		refresh();
+
+		char choice = getch();
 
 		switch (choice) {
 			case 'l':
@@ -40,19 +61,31 @@ int main() {
 				break;
 
 			case 'm':
-				printf("[l]ist\n");
-				printf("[s]ave\n");
-				printf("[c]opy\n");
-				printf("c[a]tegories\n");
-				printf("[e]dit\n");
-				printf("c[o]nfigure\n");
-				printf("[q]uit\n");
+				printw("[l]ist\n");
+				printw("[s]ave\n");
+				printw("[c]opy\n");
+				printw("c[a]tegories\n");
+				printw("[e]dit\n");
+				printw("c[o]nfigure\n");
+				printw("[q]uit\n");
 				break;
 
 			default:
 				printf("Choose one of the bracketed letters\n");
 		}
-	}
+
+		refresh();
+    }
+
+	endwin();
+
+	// char choice = 'l';
+	// huf_list();
+	//
+	// while (1 == 1) {
+	// 	choice = getchar();
+	//
+	// }
 
 	return 0;
 }
