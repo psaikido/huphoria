@@ -22,49 +22,25 @@ int main() {
         init_pair(7, COLOR_WHITE,   COLOR_BLACK);
     }
 
-	// attrset(COLOR_PAIR(3));
-	// addstr("");
-	// addstr("=== huphoria [m]enu ===\n");
-	// addstr("");
-	huf_menu();
-	refresh();
+	// huf_menu();
+	// refresh();
 
     for (;;) {
 
 		char choice = getch();
 
 		switch (choice) {
+			case 'm':
+				clear();
+				huf_menu();
+			break;
 			case 'l':
 				clear();
 				huf_list();
 				break;
 
-			case 's':
-				huf_save();
-				break;
-
-			case 'c':
-				huf_copy();
-				break;
-
-			case 'a':
-				huf_categories();
-				break;
-
-			case 'e':
-				huf_edit();
-				break;
-
-			case 'o':
-				huf_configure();
-				break;
-
 			case 'q':
 				huf_quit();
-				break;
-
-			case 'm':
-				huf_menu();
 				break;
 
 			default:

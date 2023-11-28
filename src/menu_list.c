@@ -5,8 +5,10 @@
 #include <string.h>
 #include <errno.h>
 #include "../include/huf_menu_funcs.h" 
+#include "../include/huf_configure.h" 
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
+#define ENTER '\n'
 
 FILE* getFile() {
 	char filename[100];
@@ -87,7 +89,6 @@ void huf_menu() {
 	}
 
 	the_items[n_choices] = (ITEM *)NULL;
-	attrset(COLOR_PAIR(3));
 	the_menu = new_menu((ITEM **)the_items);
 
 	menuwin = newwin(11, 40, 1, 4);
@@ -103,7 +104,6 @@ void huf_menu() {
 	/* Print a border around the main window and print a title */
 	box(menuwin, 0, 0);
 	print_in_middle(menuwin, 1, 0, 40, "=== huphoria [m]enu ===", COLOR_PAIR(3));
-	attrset(COLOR_PAIR(3));
 	mvwaddch(menuwin, 2, 0, ACS_LTEE);
 	mvwhline(menuwin, 2, 1, ACS_HLINE, 38);
 	mvwaddch(menuwin, 2, 39, ACS_RTEE);
@@ -125,13 +125,46 @@ void huf_menu() {
 				menu_driver(the_menu, REQ_UP_ITEM);
 			break;
 
-			case 10: // enter pressed
-				huf_quit();
+			case ENTER: {	
+				ITEM *cur = current_item(the_menu);
+				process_menu_choice(menuwin, item_index(cur));
+			}
 			break;
 		}
 
 		wrefresh(menuwin);
 	}
+}
+
+void process_menu_choice(WINDOW* menu, int x) {
+	// wprintw(menu, "%d", x);
+	clear();
+
+	switch (x) {
+		case 0:
+			huf_list();
+		break;
+		case 1:
+			huf_save();
+		break;
+		case 2:
+			huf_copy();
+		break;
+		case 3:
+			huf_categories();
+		break;
+		case 4:
+			huf_edit();
+		break;
+		case 5:
+			huf_configure();
+		break;
+		case 6:
+			huf_quit();
+		break;
+	}
+
+	refresh();
 }
 
 void fire() {
