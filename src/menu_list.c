@@ -35,7 +35,7 @@ void huf_list() {
 	char line[255];
 
     while (fgets(line, sizeof(line), f)) {
-		printw("[%d]: %s", i++, line);
+		wprintw(mainwin, "[%d]: %s", i++, line);
     }
 
 	fclose(f);
@@ -46,18 +46,26 @@ void print_in_middle(WINDOW *win, int starty, int startx, int width, char *strin
 {	int length, x, y;
 	float temp;
 
-	if(win == NULL)
+	if(win == NULL) {
 		win = stdscr;
+	}
+
 	getyx(win, y, x);
-	if(startx != 0)
+
+	if(startx != 0) {
 		x = startx;
-	if(starty != 0)
+	}
+
+	if(starty != 0) {
 		y = starty;
-	if(width == 0)
+	}
+
+	if(width == 0) {
 		width = 80;
+	}
 
 	length = strlen(string);
-	temp = (width - length)/ 2;
+	temp = (width - length) / 2;
 	x = startx + (int)temp;
 	wattron(win, color);
 	mvwprintw(win, y, x, "%s", string);
@@ -66,10 +74,10 @@ void print_in_middle(WINDOW *win, int starty, int startx, int width, char *strin
 }
 
 void huf_menu() {
-	WINDOW *menuwin;
 	ITEM **the_items;
 	MENU *the_menu;
 	int n_choices;
+	int c;
 
 	char *choices[] = {
 		"[l] list",
@@ -90,19 +98,10 @@ void huf_menu() {
 
 	the_items[n_choices] = (ITEM *)NULL;
 	the_menu = new_menu((ITEM **)the_items);
-
-	menuwin = newwin(11, 40, 1, 4);
-	keypad(menuwin, TRUE);
-     
-	/* Set main window and sub window */
+	// set_menu_sub(the_menu, derwin(menuwin, 8, 38, 3, 1));
 	set_menu_win(the_menu, menuwin);
-	set_menu_sub(the_menu, derwin(menuwin, 8, 38, 3, 1));
-
-	/* Set menu mark to the string " * " */
 	set_menu_mark(the_menu, " * ");
 
-	/* Print a border around the main window and print a title */
-	box(menuwin, 0, 0);
 	print_in_middle(menuwin, 1, 0, 40, "=== huphoria [m]enu ===", COLOR_PAIR(3));
 	mvwaddch(menuwin, 2, 0, ACS_LTEE);
 	mvwhline(menuwin, 2, 1, ACS_HLINE, 38);
@@ -110,8 +109,6 @@ void huf_menu() {
 
 	post_menu(the_menu);
 	wrefresh(menuwin);
-
-	int c;
 
 	while((c = wgetch(menuwin)) != 'q') {
 		switch(c) {	
@@ -136,9 +133,10 @@ void huf_menu() {
 	}
 }
 
-void process_menu_choice(WINDOW* menu, int x) {
-	// wprintw(menu, "%d", x);
+void process_menu_choice(int x) {
 	clear();
+
+	print_in_middle(menuwin, 1, 0, 40, "=== huphoria [m]enu ===", COLOR_PAIR(3));
 
 	switch (x) {
 		case 0:
