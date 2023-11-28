@@ -19,16 +19,6 @@ int main() {
 	noecho();
 	keypad(stdscr, TRUE);
 
-	int x, y;
-	getmaxyx(stdscr, y, x);
-
-	mainwin = newwin(x, 30, 1, 31);
-	keypad(mainwin, TRUE);
-
-	menuwin = newwin(x, 28, 0, 0);
-	keypad(menuwin, TRUE);
-	box(menuwin, 0, 0);
-
     if (has_colors()) {
         start_color();
         init_pair(1, COLOR_RED,     COLOR_BLACK);
@@ -39,6 +29,16 @@ int main() {
         init_pair(6, COLOR_MAGENTA, COLOR_BLACK);
         init_pair(7, COLOR_WHITE,   COLOR_BLACK);
     }
+
+	int x, y;
+	getmaxyx(stdscr, y, x);
+
+	menuwin = newwin(x, 20, 0, 0);
+	keypad(menuwin, TRUE);
+	box(menuwin, 0, 0);
+
+	mainwin = newwin(y, x - 18, 1, 21);
+	keypad(mainwin, TRUE);
 
 	huf_menu();
 
@@ -135,19 +135,20 @@ void huf_menu() {
 	n_choices = ARRAY_SIZE(choices);
 	the_items = (ITEM **)calloc(n_choices + 1, sizeof(ITEM *));
 
+	wattron(mainwin, COLOR_PAIR(3));
 	for(int i = 0; i < n_choices; ++i) {
 		the_items[i] = new_item(choices[i], "");
 	}
+	wattroff(mainwin, COLOR_PAIR(3));
 
 	the_items[n_choices] = (ITEM *)NULL;
 	the_menu = new_menu((ITEM **)the_items);
-	set_menu_sub(the_menu, derwin(menuwin, 8, 26, 3, 1));
+	set_menu_sub(the_menu, derwin(menuwin, 8, 18, 3, 1));
 	set_menu_win(the_menu, menuwin);
-	set_menu_mark(the_menu, " * ");
+	set_menu_mark(the_menu, " *");
+	set_menu_back(the_menu, COLOR_PAIR(4));
 
-	print_in_middle(menuwin, 1, 0, 30, "=== huphoria [m]enu ===", COLOR_PAIR(3));
-	mvwaddch(menuwin, 2, 0, ACS_LTEE);
-	mvwaddch(menuwin, 2, 39, ACS_RTEE);
+	print_in_middle(menuwin, 1, 0, 20, " == huphoria == ", COLOR_PAIR(3));
 
 	post_menu(the_menu);
 	wrefresh(menuwin);
@@ -164,6 +165,38 @@ void huf_menu() {
 				menu_driver(the_menu, REQ_UP_ITEM);
 			break;
 
+			case 'l':
+				huf_list();
+			break;
+
+			case 's':
+				huf_save();
+			break;
+
+			case 'c':
+				huf_copy();
+			break;
+
+			case 'a':
+				huf_categories();
+			break;
+
+			case 'e':
+				huf_edit();
+			break;
+
+			case 'o':
+				huf_configure();
+			break;
+
+			case 'q':
+				huf_quit();
+			break;
+
+			case '\t':
+				huf_configure();
+			break;
+
 			case ENTER: {	
 				ITEM *cur = current_item(the_menu);
 				process_menu_choice(item_index(cur));
@@ -177,8 +210,7 @@ void huf_menu() {
 
 
 void process_menu_choice(int x) {
-	// print_in_middle(menuwin, 1, 0, 40, "=== huphoria [m]enu ===", COLOR_PAIR(3));
-
+	wattron(mainwin, COLOR_PAIR(3));
 	switch (x) {
 		case 0:
 			huf_list();
@@ -203,7 +235,8 @@ void process_menu_choice(int x) {
 		break;
 	}
 
-	refresh();
+	wattroff(mainwin, COLOR_PAIR(3));
+	wrefresh(mainwin);
 }
 
 
