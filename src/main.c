@@ -1,3 +1,4 @@
+#include <curses.h>
 #include <ncurses.h>
 #include <menu.h>
 #include <stdio.h>
@@ -123,13 +124,13 @@ void huf_menu() {
 	int c;
 
 	char *choices[] = {
-		"[l] list",
-		"[s] save",
-		"[c] copy",
-		"[a] categories",
-		"[e] edit",
-		"[o] configure",
-		"[q] quit"
+		"list",
+		"save",
+		"copy",
+		"categories",
+		"edit",
+		"configure",
+		"quit"
 	};
 
 	n_choices = ARRAY_SIZE(choices);
@@ -165,38 +166,6 @@ void huf_menu() {
 				menu_driver(the_menu, REQ_UP_ITEM);
 			break;
 
-			case 'l':
-				huf_list();
-			break;
-
-			case 's':
-				huf_save();
-			break;
-
-			case 'c':
-				huf_copy();
-			break;
-
-			case 'a':
-				huf_categories();
-			break;
-
-			case 'e':
-				huf_edit();
-			break;
-
-			case 'o':
-				huf_configure();
-			break;
-
-			case 'q':
-				huf_quit();
-			break;
-
-			case '\t':
-				huf_configure();
-			break;
-
 			case ENTER: {	
 				ITEM *cur = current_item(the_menu);
 				process_menu_choice(item_index(cur));
@@ -211,6 +180,7 @@ void huf_menu() {
 
 void process_menu_choice(int x) {
 	wattron(mainwin, COLOR_PAIR(3));
+
 	switch (x) {
 		case 0:
 			huf_list();
