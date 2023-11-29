@@ -34,7 +34,7 @@ int main() {
 	int x, y;
 	getmaxyx(stdscr, y, x);
 
-	menuwin = newwin(x, 20, 0, 0);
+	menuwin = newwin(y, 20, 0, 0);
 	keypad(menuwin, TRUE);
 	box(menuwin, 0, 0);
 
@@ -65,23 +65,6 @@ FILE* getFile() {
 	} else {
 		return f;
 	}
-}
-
-
-void huf_list() {
-	FILE *f = getFile();
-
-	int i = 1;
-	char line[255];
-
-	wclear(mainwin);
-
-    while (fgets(line, sizeof(line), f)) {
-		wprintw(mainwin, "[%d]: %s", i++, line);
-    }
-
-	fclose(f);
-	wrefresh(mainwin);
 }
 
 
@@ -179,6 +162,7 @@ void huf_menu() {
 
 
 void process_menu_choice(int x) {
+	wclear(mainwin);
 	wattron(mainwin, COLOR_PAIR(3));
 
 	switch (x) {
@@ -210,38 +194,42 @@ void process_menu_choice(int x) {
 }
 
 
+void huf_list() {
+	FILE *f = getFile();
+
+	int i = 1;
+	char line[255];
+
+    while (fgets(line, sizeof(line), f)) {
+		wprintw(mainwin, "[%d]: %s", i++, line);
+    }
+
+	fclose(f);
+}
+
+
 void huf_edit() {
-	wclear(mainwin);
 	wprintw(mainwin, "the edit");
-	wrefresh(mainwin);
 }
 
 
 void huf_save() {
-	wclear(mainwin);
 	wprintw(mainwin, "the save");
-	wrefresh(mainwin);
 }
 
 
 void huf_copy() {
-	wclear(mainwin);
 	wprintw(mainwin, "the copy");
-	wrefresh(mainwin);
 }
 
 
 void huf_categories() {
-	wclear(mainwin);
 	wprintw(mainwin, "the categories");
-	wrefresh(mainwin);
 }
 
 
 void huf_configure() {
-	wclear(mainwin);
 	wprintw(mainwin, "the configure");
-	wrefresh(mainwin);
 }
 
 
