@@ -13,3 +13,5 @@ void huf_quit();
 void print_in_middle(WINDOW *win, int starty, int startx, int width,
                      char *string, chtype color);
 void process_menu_choice(int x);
+FILE* getFile(); 
+char** getData();

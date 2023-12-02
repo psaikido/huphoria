@@ -1,10 +1,10 @@
-#include <curses.h>
-#include <ncurses.h>
-#include <menu.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <curses.h>
+#include <ncurses.h>
+#include <menu.h>
 #include "../include/huf_menu_funcs.h" 
 
 WINDOW* mainwin;
@@ -12,6 +12,8 @@ WINDOW* menuwin;
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 #define ENTER '\n'
+
+size_t TOTAL_LINES = 0;
 
 
 int main() {
@@ -49,28 +51,81 @@ int main() {
 }
 
 
-FILE* getFile() {
+FILE* getFile()
+{
 	char filename[100];
 	strcpy (filename, getenv("HOME"));
 	strcat (filename, "/code/huphoria/data/data.txt");
 
-	FILE *f = NULL;
+	FILE *fp = NULL;
 	
 	errno = 0;
-	f = fopen(filename, "r");
+	fp = fopen(filename, "r");
 
-	if (f == NULL) {
+	if (fp == NULL) {
 		fprintf(stderr, "Error opening %s for reading, errno: %d\n", filename, errno);
 		exit(1);
 	} else {
-		return f;
+		return fp;
 	}
+}
+
+
+char** getData()
+{
+	FILE* fp = getFile();
+	
+	char **lines;
+	lines = malloc(sizeof(char *) * 1024);
+	size_t total_lines = 0;
+	size_t total_chars = 0;
+	char c;
+
+	do {
+		if (feof(fp)) {
+			break;
+		}
+
+		c = fgetc(fp);
+
+		if (total_chars == 0) {
+			lines[total_lines] = malloc(1024); 
+		}
+
+		lines[total_lines][total_chars] = c;
+		total_chars++;
+
+		if (c == '\n') {
+			lines[total_lines] = realloc(lines[total_lines], total_chars + 1);
+			lines[total_lines][total_chars] = '\0';
+			total_lines++;
+			total_chars = 0;
+		}
+	} while (true);
+
+	lines = realloc(lines, sizeof(char *) * total_lines);
+	TOTAL_LINES = total_lines;
+
+
+	// for (size_t i = 0; i < total_lines; i++) {
+	// 	printf("%s", data[i]);
+	// }
+	//
+	// for (size_t i = 0; i < total_lines; i++) {
+	// 	free(lines[i]);
+	// }
+	//
+	// free(lines);
+
+	fclose(fp);
+
+	return lines;
 }
 
 
 void print_in_middle(WINDOW *win, int starty, int startx, int width, char *string, chtype color) {
 	int length, x, y;
-	float temp;
+	int temp;
 
 	if(win == NULL) {
 		win = stdscr;
@@ -119,11 +174,11 @@ void huf_menu() {
 	n_choices = ARRAY_SIZE(choices);
 	the_items = (ITEM **)calloc(n_choices + 1, sizeof(ITEM *));
 
-	wattron(mainwin, COLOR_PAIR(3));
+	wattron(menuwin, COLOR_PAIR(3));
 	for(int i = 0; i < n_choices; ++i) {
 		the_items[i] = new_item(choices[i], "");
 	}
-	wattroff(mainwin, COLOR_PAIR(3));
+	wattroff(menuwin, COLOR_PAIR(3));
 
 	the_items[n_choices] = (ITEM *)NULL;
 	the_menu = new_menu((ITEM **)the_items);
@@ -195,16 +250,25 @@ void process_menu_choice(int x) {
 
 
 void huf_list() {
-	FILE *f = getFile();
+	char **data = getData();
+	int n_choices = 0;
+	ITEM **the_items;
+	the_items = (ITEM **)calloc(n_choices + 1, sizeof(ITEM *));
+	MENU *cmdmenu;
+	// int c;
 
-	int i = 1;
-	char line[255];
-
-    while (fgets(line, sizeof(line), f)) {
-		wprintw(mainwin, "[%d]: %s", i++, line);
+	for (size_t i = 0; i < TOTAL_LINES; i++) {
+		the_items[i] = new_item(data[i], "");
+		wprintw(mainwin, "[%zu]: %s", i + 1, data[i]);
     }
 
-	fclose(f);
+
+	cmdmenu = new_menu((ITEM **)the_items);
+	set_menu_sub(cmdmenu, derwin(mainwin, 40, 10, 1, 21));
+	set_menu_win(cmdmenu, mainwin);
+	set_menu_mark(cmdmenu, " *");
+	set_menu_back(cmdmenu, COLOR_PAIR(3));
+	post_menu(cmdmenu);
 }
 
 

@@ -1,2 +1,3 @@
-the first
-the second, with more gubbins
+sudo journalctl -p 3 -xb
+cd ~/dotfiles && vi
+mogrify -quality 50% [filename]
