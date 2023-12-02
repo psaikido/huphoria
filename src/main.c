@@ -16,7 +16,8 @@ WINDOW* menuwin;
 size_t TOTAL_LINES = 0;
 
 
-int main() {
+int main() 
+{
 	initscr();
 	cbreak();
 	noecho();
@@ -123,7 +124,8 @@ char** getData()
 }
 
 
-void print_in_middle(WINDOW *win, int starty, int startx, int width, char *string, chtype color) {
+void print_in_middle(WINDOW *win, int starty, int startx, int width, char *string, chtype color) 
+{
 	int length, x, y;
 	int temp;
 
@@ -155,7 +157,8 @@ void print_in_middle(WINDOW *win, int starty, int startx, int width, char *strin
 }
 
 
-void huf_menu() {
+void huf_menu() 
+{
 	ITEM **the_items;
 	MENU *the_menu;
 	int n_choices;
@@ -216,7 +219,8 @@ void huf_menu() {
 }
 
 
-void process_menu_choice(int x) {
+void process_menu_choice(int x) 
+{
 	wclear(mainwin);
 	wattron(mainwin, COLOR_PAIR(3));
 
@@ -249,22 +253,24 @@ void process_menu_choice(int x) {
 }
 
 
-void huf_list() {
-	char **data = getData();
-	int n_choices = 0;
-	ITEM **the_items;
-	the_items = (ITEM **)calloc(n_choices + 1, sizeof(ITEM *));
+void huf_list() 
+{
+	ITEM **the_cmds;
 	MENU *cmdmenu;
-	// int c;
 
-	for (size_t i = 0; i < TOTAL_LINES; i++) {
-		the_items[i] = new_item(data[i], "");
-		wprintw(mainwin, "[%zu]: %s", i + 1, data[i]);
+	char **data = getData();
+	int n_choices = TOTAL_LINES;
+
+	the_cmds = (ITEM **)calloc(n_choices + 1, sizeof(ITEM *));
+
+	for (int i = 0; i < TOTAL_LINES; i++) {
+		the_cmds[i] = new_item(data[i], "");
+		wprintw(mainwin, "[%d]: %s", i + 1, data[i]);
     }
 
-
-	cmdmenu = new_menu((ITEM **)the_items);
-	set_menu_sub(cmdmenu, derwin(mainwin, 40, 10, 1, 21));
+	the_cmds[n_choices + 1] = (ITEM *)NULL;
+	cmdmenu = new_menu((ITEM **)the_cmds);
+	set_menu_sub(cmdmenu, derwin(mainwin, 40, 30, 1, 21));
 	set_menu_win(cmdmenu, mainwin);
 	set_menu_mark(cmdmenu, " *");
 	set_menu_back(cmdmenu, COLOR_PAIR(3));
@@ -272,32 +278,38 @@ void huf_list() {
 }
 
 
-void huf_edit() {
+void huf_edit() 
+{
 	wprintw(mainwin, "the edit");
 }
 
 
-void huf_save() {
+void huf_save() 
+{
 	wprintw(mainwin, "the save");
 }
 
 
-void huf_copy() {
+void huf_copy() 
+{
 	wprintw(mainwin, "the copy");
 }
 
 
-void huf_categories() {
+void huf_categories() 
+{
 	wprintw(mainwin, "the categories");
 }
 
 
-void huf_configure() {
+void huf_configure() 
+{
 	wprintw(mainwin, "the configure");
 }
 
 
-void huf_quit() {
+void huf_quit() 
+{
 	exit(0);
 }
 
